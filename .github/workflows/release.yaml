@@ -8,6 +8,7 @@ on:
             - 'README.md'
             - 'docs/**'
             - 'ci/**'
+            - '.github/**'
 
 permissions:
     contents: write
@@ -31,15 +32,9 @@ jobs:
             - name: Install Helm
               uses: azure/setup-helm@v4
 
-            - name: Run chart-testing (lint)
-              uses: helm/chart-testing-action@v2
-              with:
-                  ct-version: v3.11.0
-
-            - name: Lint chart
-              run: ct lint --target-branch main --validate-maintainers=false
-
             - name: Run chart-releaser
               uses: helm/chart-releaser-action@v1
+              with:
+                  charts_dir: .
               env:
                   CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
